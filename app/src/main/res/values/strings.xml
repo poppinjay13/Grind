@@ -5,4 +5,10 @@
     <string name="today">Today</string>
     <string name="prompt">prompt</string>
     <string name="prompt_text">Create an Event to get started</string>
+
+    <string name="pref_file">com.grind.preferences_file</string>
+    <string name="pref_login_status">com.grind.preferences_login_status</string>
+    <string name="pref_username">com.grind.preferences_username</string>
+    <string name="pref_user_id">com.grind.preferences_user_id</string>
+    <string name="stranger">Stranger</string>
 </resources>
