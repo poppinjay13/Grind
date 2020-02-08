@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 public class CreateActivity extends AppCompatActivity {
 
+    TextView start_date, end_date, start_time, end_time;
     LinearLayout dateLayout, timeLayout;
     ImageView back, set_date, set_time;
     @Override
@@ -17,14 +20,15 @@ public class CreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create);
 
         back = findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        start_date = findViewById(R.id.start_date);
+        end_date = findViewById(R.id.end_date);
+        start_time = findViewById(R.id.start_time);
+        end_time = findViewById(R.id.end_time);
+
         dateLayout = findViewById(R.id.date_data);
+        dateLayout.setVisibility(View.GONE);
         timeLayout = findViewById(R.id.time_data);
+        timeLayout.setVisibility(View.GONE);
         set_date = findViewById(R.id.set_date);
         set_date.setTag("no_show");
         set_time = findViewById(R.id.set_time);
@@ -33,6 +37,13 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         set_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +75,11 @@ public class CreateActivity extends AppCompatActivity {
                 }
             }
         });
+
+        new setDate(start_date, CreateActivity.this,null);
+        new setDate(end_date, CreateActivity.this, null);
+        new setTime(start_time, CreateActivity.this);
+        new setTime(end_time, CreateActivity.this);
     }
 
     @Override
