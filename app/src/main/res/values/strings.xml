@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Grind</string>
+    <string name="hello">Hello,</string>
+    <string name="search">Search…</string>
+    <string name="today">Today</string>
+    <string name="prompt">prompt</string>
+    <string name="prompt_text">Create an Event to get started</string>
 </resources>
