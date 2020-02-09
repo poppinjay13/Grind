@@ -18,9 +18,6 @@ public interface EventDAO {
     @Query("SELECT * FROM events WHERE id = :id LIMIT 1")
     Event getEvent(int id);
 
-    @Query("DELETE FROM events")
-    void nukeTable();
-
     @Query("DELETE FROM events WHERE id = :id")
     void deleteEvent(int id);
 
@@ -32,4 +29,7 @@ public interface EventDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void InsertEvent(Event event);
+
+    @Query("SELECT * FROM events WHERE title LIKE '%'||:keyword||'&' OR description LIKE '%'||:keyword||'%'")
+    List<Event> findEventLike(String keyword);
 }
