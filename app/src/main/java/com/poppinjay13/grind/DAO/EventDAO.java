@@ -30,6 +30,6 @@ public interface EventDAO {
     @Query("UPDATE events SET status = 0 WHERE id = :id")
     void completeEventUndo(int id);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void InsertEvent(Event event);
 }

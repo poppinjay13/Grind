@@ -29,6 +29,7 @@
                 android:inputType="textCapWords"
                 android:maxLines="5"
                 android:layout_marginTop="20dp"
+                android:paddingBottom="10dp"
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold"
                 android:textSize="30sp"
@@ -37,8 +38,8 @@
                 android:importantForAutofill="no"/>
             <TextView
                 android:layout_width="50dp"
-                android:layout_height="5dp"
-                android:background="@drawable/button"
+                android:layout_height="3dp"
+                android:background="@drawable/button_primary"
                 android:layout_marginBottom="20dp"/>
             <EditText
                 android:id="@+id/description"
