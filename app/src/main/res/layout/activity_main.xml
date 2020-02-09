@@ -56,7 +56,7 @@
                         app:elevation="2dp"
                         android:layout_marginLeft="-20dp"
                         android:layout_marginStart="-20dp"
-                        android:contentDescription="@string/back_button"
+                        android:contentDescription="@string/stranger"
                         android:src="@drawable/edit_pen"/>
                 </LinearLayout>
                 <EditText
@@ -135,7 +135,8 @@
         android:layout_width="wrap_content"
         android:layout_margin="10dp"
         android:src="@drawable/add"
-        android:background="@drawable/button"
+        app:rippleColor="@color/colorPrimaryDark"
+        app:backgroundTint="@color/colorPrimary"
         android:layout_height="wrap_content"
         android:layout_above="@id/viewSnack"
         android:layout_alignParentEnd="true"

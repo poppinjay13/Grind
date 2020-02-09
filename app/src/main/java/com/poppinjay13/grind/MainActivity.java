@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private View contextView;
     private LinearLayout yes_events, no_events;
     private List<Event> events;
+    TextView username;
     RecyclerView eventsRecycler;
     GrindRoomDatabase grindRoomDatabase;
     Preferences preferences;
@@ -43,10 +44,17 @@ public class MainActivity extends AppCompatActivity {
         preferences.prefConfig(MainActivity.this);
         contextView = findViewById(R.id.viewSnack);
 
+        username = findViewById(R.id.username);
         yes_events = findViewById(R.id.events);
         no_events = findViewById(R.id.no_events);
         eventsRecycler = findViewById(R.id.events_recycler);
 
+        username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,NameActivity.class));
+            }
+        });
         create = findViewById(R.id.create);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,5 +104,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadEvents();
+        setName();
+    }
+
+    private void setName() {
+        username.setText(preferences.readName());
     }
 }

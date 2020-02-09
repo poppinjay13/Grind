@@ -15,29 +15,12 @@ public class Preferences {
         editor = sharedPreferences.edit();
     }
 
-    public void writeLoginStatus(boolean status){
-        editor.putBoolean(context.getString(R.string.pref_login_status),status);
-        editor.apply();
-    }
-
-    public boolean readLoginStatus(){
-        return sharedPreferences.getBoolean(context.getString(R.string.pref_login_status),false);
-    }
-
     public void writeName(String name){
         editor.putString(context.getString(R.string.pref_username),name);
         editor.apply();
     }
 
-    public String readName(){
-        return sharedPreferences.getString(context.getString(R.string.pref_username),"User");
-    }
-
-    public void logOut(){
-        editor.clear();
-        editor.apply();
-        //ResaRoomDatabase rDB = ResaRoomDatabase.getDatabase(context);
-        //rDB.farmerDAO().nukeTable();
-        //context.startActivity(new Intent(context, LoginActivity.class));
+    String readName(){
+        return sharedPreferences.getString(context.getString(R.string.pref_username),"Stranger");
     }
 }

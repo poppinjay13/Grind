@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context=".EventActivity">
 
     <ScrollView
@@ -174,7 +175,7 @@
                 android:paddingRight="10dp"
                 android:layout_marginTop="20dp"
                 android:textStyle="bold"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorPrimary"
                 android:layout_gravity="center_vertical"
                 android:textSize="15sp"/>
         </LinearLayout>
@@ -185,7 +186,7 @@
         android:layout_height="45dp"
         android:text="@string/update_event"
         android:layout_above="@id/viewSnack"
-        android:background="@drawable/button"
+        android:background="@drawable/button_primary"
         android:textSize="15sp"
         android:gravity="center"
         android:layout_margin="20dp"

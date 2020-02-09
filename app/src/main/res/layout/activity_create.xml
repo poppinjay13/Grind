@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context=".CreateActivity">
     <ScrollView
         android:layout_width="match_parent"
@@ -62,6 +63,7 @@
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
         android:layout_margin="20dp"
         android:orientation="vertical">
         <LinearLayout
@@ -201,7 +203,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="@string/create_event"
-            android:background="@drawable/button"
+            android:background="@drawable/button_primary"
             android:textSize="18sp"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
