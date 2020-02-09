@@ -11,9 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.poppinjay13.grind.Adapters.EventsAdapter;
 import com.poppinjay13.grind.Database.GrindRoomDatabase;
 import com.poppinjay13.grind.Entities.Event;
 
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton create;
     private EditText search;
+    private View contextView;
     private LinearLayout yes_events, no_events;
     private List<Event> events;
     RecyclerView eventsRecycler;
@@ -37,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         grindRoomDatabase = GrindRoomDatabase.getDatabase(MainActivity.this);
         preferences = new Preferences();
         preferences.prefConfig(MainActivity.this);
+        contextView = findViewById(R.id.viewSnack);
 
         yes_events = findViewById(R.id.events);
         no_events = findViewById(R.id.no_events);
@@ -61,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        loadEvents();
     }
 
     private void performSearch() {
@@ -77,6 +80,21 @@ public class MainActivity extends AppCompatActivity {
         }else{
             no_events.setVisibility(View.GONE);
             yes_events.setVisibility(View.VISIBLE);
+            //
+            LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+            eventsRecycler.setHasFixedSize(true);
+            eventsRecycler.setLayoutManager(layoutManager);
+            EventsAdapter mAdapter = new EventsAdapter(events, MainActivity.this, contextView);
+            eventsRecycler.setAdapter(mAdapter);
+            ItemTouchHelper itemTouchHelper = new
+                    ItemTouchHelper(new Swipe(mAdapter));
+            itemTouchHelper.attachToRecyclerView(eventsRecycler);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadEvents();
     }
 }

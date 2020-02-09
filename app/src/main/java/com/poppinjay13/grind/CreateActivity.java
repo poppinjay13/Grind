@@ -110,6 +110,7 @@ public class CreateActivity extends AppCompatActivity {
     private void save() {
         try{
             Event event = new Event(
+                    grindRoomDatabase.EventDAO().getEvents().size()+1,
                     title.getText().toString(),
                     description.getText().toString(),
                     0,

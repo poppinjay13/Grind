@@ -25,7 +25,8 @@ public class Event {
     }
 
     @Ignore
-    public Event(String title, String description, int status, String start_date, String end_date, String start_time, String end_time, String created_at, String updated_at) {
+    public Event(int id, String title, String description, int status, String start_date, String end_date, String start_time, String end_time, String created_at, String updated_at) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;

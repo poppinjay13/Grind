@@ -21,6 +21,15 @@ public interface EventDAO {
     @Query("DELETE FROM events")
     void nukeTable();
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Query("DELETE FROM events WHERE id = :id")
+    void deleteEvent(int id);
+
+    @Query("UPDATE events SET status = 1 WHERE id = :id")
+    void completeEvent(int id);
+
+    @Query("UPDATE events SET status = 0 WHERE id = :id")
+    void completeEventUndo(int id);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void InsertEvent(Event event);
 }
