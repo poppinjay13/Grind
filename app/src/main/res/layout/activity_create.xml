@@ -54,7 +54,7 @@
                 android:hint="@string/event_description"
                 android:background="#00000000"
                 android:importantForAutofill="no"
-                android:paddingBottom="75dp" />
+                android:paddingBottom="100dp" />
         </LinearLayout>
     </ScrollView>
     <LinearLayout

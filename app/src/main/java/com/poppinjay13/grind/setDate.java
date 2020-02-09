@@ -18,7 +18,7 @@ public class setDate implements View.OnClickListener, DatePickerDialog.OnDateSet
     private Calendar myCalendar;
     private Context ctx;
     private Date minDate;
-    private String myFormat = "dd/MM/yyyy"; //In which you need put here
+    private String myFormat = "dd/MM/yyyy";
     private SimpleDateFormat sdformat = new SimpleDateFormat(myFormat, Locale.UK);
 
     setDate(TextView textView, Context ctx, Date min){

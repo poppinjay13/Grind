@@ -14,6 +14,8 @@ public class Event {
     private int status;
     private String start_date;
     private String end_date;
+    private String start_time;
+    private String end_time;
     private String created_at;
     private String updated_at;
 
@@ -23,12 +25,14 @@ public class Event {
     }
 
     @Ignore
-    public Event(String title, String description, int status, String delivery_date, String delivery_time, String created_at, String updated_at) {
+    public Event(String title, String description, int status, String start_date, String end_date, String start_time, String end_time, String created_at, String updated_at) {
         this.title = title;
         this.description = description;
         this.status = status;
-        this.start_date = delivery_date;
-        this.end_date = delivery_time;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.start_time = start_time;
+        this.end_time = end_time;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
@@ -79,6 +83,22 @@ public class Event {
 
     public void setEnd_date(String end_date) {
         this.end_date = end_date;
+    }
+
+    public String getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(String start_time) {
+        this.start_time = start_time;
+    }
+
+    public String getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(String end_time) {
+        this.end_time = end_time;
     }
 
     public String getCreated_at() {
