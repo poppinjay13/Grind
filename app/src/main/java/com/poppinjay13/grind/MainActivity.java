@@ -7,8 +7,11 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +26,8 @@ import com.poppinjay13.grind.Adapters.EventsAdapter;
 import com.poppinjay13.grind.Database.GrindRoomDatabase;
 import com.poppinjay13.grind.Entities.Event;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,10 +37,12 @@ public class MainActivity extends AppCompatActivity {
     private View contextView;
     private LinearLayout yes_events, no_events;
     private List<Event> events;
+    Spinner sort;
     TextView username;
-    RecyclerView eventsRecycler, searchRecycler;
+    RecyclerView eventsRecycler;
     GrindRoomDatabase grindRoomDatabase;
     Preferences preferences;
+    private EventsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +53,29 @@ public class MainActivity extends AppCompatActivity {
         preferences = new Preferences();
         preferences.prefConfig(MainActivity.this);
         contextView = findViewById(R.id.viewSnack);
+        mAdapter = new EventsAdapter(MainActivity.this, contextView);
 
         username = findViewById(R.id.username);
         yes_events = findViewById(R.id.events);
         no_events = findViewById(R.id.no_events);
         eventsRecycler = findViewById(R.id.events_recycler);
-        searchRecycler = findViewById(R.id.search_recycler);
+
+        sort = findViewById(R.id.sort_by);
+        String[] sorters = new String[]{"Date asc","Date desc","Title asc","Title desc","Status"};
+        ArrayAdapter<CharSequence> accountAdapter = new ArrayAdapter<CharSequence>(MainActivity.this, R.layout.spinner_texts, sorters );
+        accountAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
+        sort.setAdapter(accountAdapter);
+        sort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sortBy(events, sort.getSelectedItemPosition());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         username.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this,NameActivity.class));
             }
         });
+
         create = findViewById(R.id.create);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(count==0){
-                    searchRecycler.setVisibility(View.GONE);
-                    eventsRecycler.setVisibility(View.VISIBLE);
+                    events = grindRoomDatabase.EventDAO().getEvents();
+                    loadEvents(events);
                 }else{
                     performSearch();
                 }
@@ -99,38 +124,81 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+        eventsRecycler.setHasFixedSize(true);
+        eventsRecycler.setLayoutManager(layoutManager);
+    }
+
+    private void sortBy(List<Event> events, int selectedItemPosition) {
+        if (selectedItemPosition == 0) {
+            if (events != null) {
+                Collections.sort(events, new Comparator<Event>() {
+                    @Override
+                    public int compare(Event lhs, Event rhs) {
+                        return lhs.getStart_date().compareTo(rhs.getStart_date());
+                    }
+                });
+            }
+        }else if (selectedItemPosition == 1) {
+            if (events != null) {
+                Collections.sort(events, new Comparator<Event>() {
+                    @Override
+                    public int compare(Event lhs, Event rhs) {
+                        return rhs.getStart_date().compareTo(lhs.getStart_date());
+                    }
+                });
+            }
+        }else if(selectedItemPosition == 2){
+            if (events != null) {
+                Collections.sort(events, new Comparator<Event>() {
+                    @Override
+                    public int compare(Event lhs, Event rhs) {
+                        return lhs.getTitle().compareTo(rhs.getTitle());
+                    }
+                });
+            }
+        }else if (selectedItemPosition == 3) {
+            if (events != null) {
+                Collections.sort(events, new Comparator<Event>() {
+                    @Override
+                    public int compare(Event lhs, Event rhs) {
+                        return rhs.getTitle().compareTo(lhs.getTitle());
+                    }
+                });
+            }
+        }else{
+            if (events != null) {
+                Collections.sort(events, new Comparator<Event>() {
+                    @Override
+                    public int compare(Event lhs, Event rhs) {
+                        return rhs.getStatus() - (lhs.getStatus());
+                    }
+                });
+            }
+        }
+        sort.setSelection(selectedItemPosition);
+        assert events != null;
+        loadEvents(events);
     }
 
     private void performSearch() {
         List<Event> filter = grindRoomDatabase.EventDAO().findEventLike(search.getText().toString());
         if(filter.size()<1){
             FluentSnackbar fluentSnackbar = FluentSnackbar.create(contextView);
-            fluentSnackbar.create("No results found")
-                    .maxLines(1)
+            fluentSnackbar.create("No results found for that keyword")
+                    .maxLines(2)
                     .backgroundColorRes(R.color.colorPrimary)
                     .textColorRes(R.color.colorWhite)
                     .duration(Snackbar.LENGTH_SHORT)
                     .important(true)
                     .show();
-        }else{
-            LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
-            searchRecycler.setHasFixedSize(true);
-            searchRecycler.setLayoutManager(layoutManager);
-            EventsAdapter mAdapter = new EventsAdapter(filter, MainActivity.this, contextView);
-            searchRecycler.setAdapter(mAdapter);
-            ItemTouchHelper itemTouchHelper = new
-                    ItemTouchHelper(new Swipe(mAdapter));
-            itemTouchHelper.attachToRecyclerView(searchRecycler);
-            eventsRecycler.setVisibility(View.GONE);
-            searchRecycler.setVisibility(View.VISIBLE);
-            no_events.setVisibility(View.GONE);
-            yes_events.setVisibility(View.VISIBLE);
-            search.clearFocus();
         }
+        loadEvents(filter);
     }
 
-    private void loadEvents(){
-        events = grindRoomDatabase.EventDAO().getEvents();
+    private void loadEvents(List<Event> events){
+        this.events = events;
         if(events.size()<1){
             no_events.setVisibility(View.VISIBLE);
             yes_events.setVisibility(View.GONE);
@@ -138,10 +206,7 @@ public class MainActivity extends AppCompatActivity {
             no_events.setVisibility(View.GONE);
             yes_events.setVisibility(View.VISIBLE);
             //
-            LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
-            eventsRecycler.setHasFixedSize(true);
-            eventsRecycler.setLayoutManager(layoutManager);
-            EventsAdapter mAdapter = new EventsAdapter(events, MainActivity.this, contextView);
+            mAdapter.setEvents(events);
             eventsRecycler.setAdapter(mAdapter);
             ItemTouchHelper itemTouchHelper = new
                     ItemTouchHelper(new Swipe(mAdapter));
@@ -152,7 +217,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadEvents();
+        events = grindRoomDatabase.EventDAO().getEvents();
+        loadEvents(events);
         setName();
     }
 

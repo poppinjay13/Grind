@@ -46,7 +46,9 @@
                 android:maxLines="1"
                 android:gravity="center"
                 android:hint="@string/stranger"
-                android:importantForAutofill="no" />
+                android:importantForAutofill="no" >
+                <requestFocus/>
+            </EditText>
         </FrameLayout>
     </ScrollView>
     <ImageView

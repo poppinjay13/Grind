@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,12 +28,11 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
     private List<Event> myEvents;
     private Context mContext;
     private View mSnackbar;
-    private Event deleted, completed;
-    private int deletePos, completePos;
+    private Event deleted;
+    private int deletePos;
     private GrindRoomDatabase grindRoomDatabase;
     private String myFormat = "dd/MM/yyyy";
     private SimpleDateFormat sdformat = new SimpleDateFormat(myFormat, Locale.UK);
-
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView month, date, title, description;
         CardView card;
@@ -57,13 +57,17 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public EventsAdapter(List<Event> myDataset, Context context, View snackbar) {
-        myEvents = myDataset;
+    public EventsAdapter(Context context, View snackbar) {
         mContext = context;
         mSnackbar = snackbar;
     }
 
+    public void setEvents(List<Event> myEvents){
+        this.myEvents = myEvents;
+    }
+
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
     public EventsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                           int viewType) {
@@ -76,7 +80,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         try {
@@ -152,7 +156,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
             }
 
             grindRoomDatabase.EventDAO().completeEvent(myEvents.get(position).getId());
-            notifyItemChanged(position);
+            //mainActivity.notifyChange(position);
+            //notifyItemChanged(position);
             fluentSnackbar.create("Event Marked as Complete")
                     .maxLines(1)
                     .backgroundColorRes(R.color.colorPrimary)

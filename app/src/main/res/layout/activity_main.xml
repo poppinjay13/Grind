@@ -84,14 +84,43 @@
                 android:layout_height="wrap_content"
                 android:padding="20dp"
                 android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/today"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="20sp"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/today"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="20sp"
+                        android:ellipsize="end"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight=".5"
+                        android:textStyle="bold"/>
+                    <Spinner
+                        android:id="@+id/sort_by"
+                        android:textColor="@color/colorAccent"
+                        android:gravity="end"
+                        android:layout_gravity="center_vertical"
+                        android:background="@null"
+                        android:layout_width="0dp"
+                        android:layout_weight=".4"
+                        android:layout_height="30dp"/>
+                    <ImageView
+                        android:id="@+id/filter"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="0dp"
+                        android:labelFor="@id/sort_by"
+                        android:contentDescription="@string/filter"
+                        android:src="@drawable/sort"
+                        android:scaleType="fitCenter"
+                        android:layout_weight=".1"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_height="20dp" />
+                </LinearLayout>
                 <TextView
                     android:layout_width="50dp"
                     android:layout_height="3dp"

@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface EventDAO {
 
-    @Query("SELECT * FROM events")
+    @Query("SELECT * FROM events ORDER BY start_date ASC")
     List<Event> getEvents();
 
     @Query("SELECT * FROM events WHERE id = :id LIMIT 1")
@@ -30,6 +30,10 @@ public interface EventDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void InsertEvent(Event event);
 
-    @Query("SELECT * FROM events WHERE title LIKE '%'||:keyword||'&' OR description LIKE '%'||:keyword||'%'")
+    @Query("SELECT * FROM events " +
+            "WHERE title LIKE '%'||:keyword||'&'" +
+            " OR description LIKE '%'||:keyword||'%'" +
+            " OR start_date LIKE '%'||:keyword||'%'" +
+            " OR start_time LIKE '%'||:keyword||'%'")
     List<Event> findEventLike(String keyword);
 }
